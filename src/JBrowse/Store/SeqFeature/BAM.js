@@ -218,7 +218,7 @@ return declare( [ SeqFeatureStore, DeferredStatsMixin, DeferredFeaturesMixin, In
         seqName = this.browser.regularizeReferenceName( seqName );
         const pairCache = {};
 
-        this.bam.getRecordsForRange(seqName, query.start, query.end, {viewAsPairs: query.viewAsPairs})
+        this.bam.getRecordsForRange(seqName, query.start, query.end)
             .then(records => {
                 if(query.viewAsPairs) {
                     const recs = records.map(f => this._bamRecordToFeature(f))

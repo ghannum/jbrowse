@@ -4,7 +4,6 @@ const { IndexedCramFile, CraiIndex } = cjsRequire('@gmod/cram')
 const cramIndexedFilesCache = LRU(5)
 
 const BlobFilehandleWrapper = cjsRequire('../../Model/BlobFilehandleWrapper')
-const MAX_INSERT_SIZE_FOR_STATS = 30000
 
 class CramSlightlyLazyFeature {
 
@@ -293,7 +292,7 @@ return declare( [ SeqFeatureStore, DeferredStatsMixin, DeferredFeaturesMixin, Gl
             endCallback()
             return
         }
-        this.cram.getRecordsForRange(refSeqNumber, query.start + 1, query.end, {viewAsPairs: query.viewAsPairs})
+        this.cram.getRecordsForRange(refSeqNumber, query.start + 1, query.end)
             .then(records => {
                 if(query.viewAsPairs) {
                     const recs = records.map(f => this._cramRecordToFeature(f))

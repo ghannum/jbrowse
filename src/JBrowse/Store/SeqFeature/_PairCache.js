@@ -70,9 +70,7 @@ return declare(null, {
                     }
                     if(feat.read1 && feat.read2) {
                         delete pairCache[name]
-                        if(this.insertMaxSize > feat.get('end') - feat.get('start')) {
-                             this.featureCache[name] = feat
-                        }
+                        this.featureCache[name] = feat
                     }
                 }
                 else {
@@ -87,11 +85,43 @@ return declare(null, {
                     pairCache[name] = feat
                 }
             }
-            else if(!(records[i]._get('end') < query.start) && !(records[i]._get('start') > query.end)){
+
+            else if(!(records[i]._get('end') < query.start) && !(records[i]._get('start') > query.end)) {
                 let feat = records[i]
                 featCallback(feat)
             }
+
         }
+        Object.entries(pairCache).forEach(([k, v]) => {
+            console.log(k, v)
+            if(v.read1 && v.read1.mate) {
+                v.read2 = new SimpleFeature({
+                    id: k,
+                    data: {
+                        start: v.read1.mate.alignmentStart,
+                        end: v.read1.mate.alignmentStart+1,
+                        seq_id: v.read1.mate.sequenceId
+                    }
+                })
+                this.featureCache[name] = v
+            } else if(v.read2 && v.read2.mate) {
+                v.read1 = new SimpleFeature({
+                    id: k,
+                    data: {
+                        start: v.read2.mate.alignmentStart,
+                        end: v.read2.mate.alignmentStart+1,
+                        seq_id: v.read2.mate.sequenceId
+                    }
+                })
+                this.featureCache[name] = v
+            }
+        })
+
+        // Object.entries(this.featureCache).forEach(([k, v]) => {
+        //     if((v.read1 && !v.read2) || (v.read2 && !v.read1)) {
+        //         console.log(k)
+        //     }
+        // })
         Object.entries(this.featureCache).forEach(([k, v]) => {
             if(v._get('end') > query.start && v._get('start') < query.end) {
                 featCallback(v)
