@@ -29,7 +29,6 @@ describe( 'sequence track', function() {
                   };
 
                   track._fillSequenceBlock(block, 0, 25, "XXATGATGATGATGATGATGXX");
-                  console.log(output);
 
 
                   var f = output.children[2].children[0].children[0].children;
@@ -56,13 +55,11 @@ describe( 'sequence track', function() {
                   dojo.empty(output)
 
                   track._fillSequenceBlock(block, 0, 1, "XXATGATGATGATGATGATGXX");
-                  console.log(output);
 
 
                   var f = output.children[2].children[0].children[0].children;
                   var arr = Array.prototype.slice.call(f);
                   var seq = arr.map(function(elt) {
-                      console.log(elt.className)
                       return dojo.hasClass(elt, 'aminoAcid_start')?'M':'X';
                   }).join('');
                   expect('MMMMMM').toEqual(seq)
