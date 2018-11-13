@@ -409,6 +409,11 @@ it('can read a tribble-indexed file', function () {
             urlTemplate: '../data/1801160099-N32519_26611_S51_56704.hard-filtered.vcf',
             idxUrlTemplate: '../data/1801160099-N32519_26611_S51_56704.hard-filtered.vcf.idx',
             baseUrl: '.',
+        },
+        refSeq: {
+            name: '17',
+            start: 0,
+            end: 50000000
         }
     });
     var items = [];
