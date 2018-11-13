@@ -252,8 +252,8 @@ describe( 'BAM with paired end reads', function() {
     beforeEach( function() {
         b = new BAMStore({
             browser: new Browser({ unitTestMode: true }),
-            bam: new XHRBlob('../data/paired-end-clip.bam'),
-            bai: new XHRBlob('../data/paired-end-clip.bam.bai'),
+            bam: new XHRBlob('../data/large_inserts/paired-end-clip.bam'),
+            bai: new XHRBlob('../data/large_inserts/paired-end-clip.bam.bai'),
             refSeq: { name: 'GK000001.2', start: 0, end: 1000000 }
         });
     });
