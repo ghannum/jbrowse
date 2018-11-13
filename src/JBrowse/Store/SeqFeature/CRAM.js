@@ -35,6 +35,7 @@ class CramSlightlyLazyFeature {
     _get_unmapped() { return this.record.isSegmentUnmapped()}
     _get_template_length() { return this.record.templateLength || this.record.templateSize}
     _get_next_seq_id() { return this.record.mate ? this._store._refIdToName(this.record.mate.sequenceId) : undefined }
+    _get_next_pos() { return this.record.mate ? this.record.mate.alignmentStart : undefined }
     _get_next_segment_position() { return this.record.mate
         ? ( this._store._refIdToName(this.record.mate.sequenceId)+':'+this.record.mate.alignmentStart) : undefined}
     _get_tags() { return this.record.tags }

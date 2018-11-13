@@ -48,6 +48,9 @@ var SimpleFeature = Util.fastDeclare({
         return this.data[ name.toLowerCase() ];
     },
 
+    _get: function(name) {
+        return this.data[ name ];
+    },
     /**
      * Set an item of data.
      */

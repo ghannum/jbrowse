@@ -93,26 +93,34 @@ return declare(null, {
 
         }
         Object.entries(pairCache).forEach(([k, v]) => {
-            console.log(k, v)
-            if(v.read1 && v.read1.mate) {
+            //console.log(k, v)
+            if(v.read1) {
                 v.read2 = new SimpleFeature({
                     id: k,
                     data: {
-                        start: v.read1.mate.alignmentStart,
-                        end: v.read1.mate.alignmentStart+1,
-                        seq_id: v.read1.mate.sequenceId
+                        name: k,
+                        start: v.read1._get('next_pos'),
+                        pair_orientation: v.read1._get('pair_orientation'),
+                        template_length: -v.read1._get('template_length'),
+                        end: v.read1._get('next_pos') + 100,
+                        seq_id: v.read1._get('next_seq_id')
                     }
                 })
+                delete pairCache[k]
                 this.featureCache[name] = v
-            } else if(v.read2 && v.read2.mate) {
+            } else if(v.read2) {
                 v.read1 = new SimpleFeature({
                     id: k,
                     data: {
-                        start: v.read2.mate.alignmentStart,
-                        end: v.read2.mate.alignmentStart+1,
-                        seq_id: v.read2.mate.sequenceId
+                        name: k,
+                        start: v.read2._get('next_pos'),
+                        end: v.read2._get('next_pos') + 100,
+                        pair_orientation: v.read2._get('pair_orientation'),
+                        template_length: -v.read2._get('template_length'),
+                        seq_id: v.read2._get('next_seq_id')
                     }
                 })
+                delete pairCache[k]
                 this.featureCache[name] = v
             }
         })
@@ -146,12 +154,12 @@ return declare(null, {
                 .filter(tlen => tlen < this.insertMaxSize)
                 .sort((a, b) => a - b)
             var sum = tlens.reduce((a, b) => a + b, 0)
-            var sum2 = tlens.map(a => a*a).reduce((a, b) => a + b, 0)
-            var avg = sum / total;
-            var sd = Math.sqrt((total * sum2 - sum*sum) / (total * total));
+            var sum2 = tlens.map(a => a * a).reduce((a, b) => a + b, 0)
+            var avg = sum / total
+            var sd = Math.sqrt((total * sum2 - sum * sum) / (total * total))
             return {
-                upper: avg + 3*sd,
-                lower: avg - 3*sd
+                upper: avg + 3 * sd,
+                lower: avg - 3 * sd
             }
         }
         return { upper: Infinity, lower: 0 }
