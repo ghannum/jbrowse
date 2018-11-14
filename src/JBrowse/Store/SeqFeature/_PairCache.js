@@ -56,8 +56,14 @@ return declare(null, {
     pairFeatures(query, records, featCallback, endCallback, errorCallback, featTransform) {
         const pairCache = {};
         for(let i = 0; i < records.length; i++) {
+            if(records[i].get('name')=='ctgA_2335_2829_1:0:0_1:0:0_f4') {
+                console.log('here',records[i],records[i].record.flags,query)
+            }
             let feat
             if (canBePaired(records[i])) {
+                if(records[i].get('name')=='ctgA_2335_2829_1:0:0_1:0:0_f4') {
+                    console.log('here2',records[i],records[i].record.flags,query)
+                }
                 let name = records[i]._get('name')
                 feat = pairCache[name]
                 if (feat) {
@@ -67,6 +73,9 @@ return declare(null, {
                         feat.read2 = records[i]
                     } else {
                         console.log('unable to pair read',records[i])
+                    }
+                    if(records[i].get('name')=='ctgA_2335_2829_1:0:0_1:0:0_f4') {
+                        console.log('here3',records[i],records[i].record.flags,query,feat)
                     }
                     if(feat.read1 && feat.read2) {
                         delete pairCache[name]
@@ -94,9 +103,10 @@ return declare(null, {
         }
         Object.entries(pairCache).forEach(([k, v]) => {
             //console.log(k, v)
-            if(v.read1) {
+
+            if(v.read1 && v.read1._get('seq_id') === v.read1.get('next_seq_id')) {
                 v.read2 = new SimpleFeature({
-                    id: k,
+                    id: Infinity,
                     data: {
                         name: k,
                         start: v.read1._get('next_pos'),
@@ -107,10 +117,10 @@ return declare(null, {
                     }
                 })
                 delete pairCache[k]
-                this.featureCache[name] = v
-            } else if(v.read2) {
+                this.featureCache[k] = v
+            } else if(v.read2 && v.read2._get('seq_id') === v.read2.get('next_seq_id')) {
                 v.read1 = new SimpleFeature({
-                    id: k,
+                    id: Infinity,
                     data: {
                         name: k,
                         start: v.read2._get('next_pos'),
@@ -121,7 +131,12 @@ return declare(null, {
                     }
                 })
                 delete pairCache[k]
-                this.featureCache[name] = v
+                this.featureCache[k] = v
+            }
+        })
+        Object.entries(this.featureCache).forEach(([k, v]) => {
+            if(v.get('name')=='ctgA_2335_2829_1:0:0_1:0:0_f4') {
+                console.log('here4',v,query,v.get('start'),v.get('end'),v.id(),v.get('name'))
             }
         })
 
