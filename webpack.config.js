@@ -64,6 +64,9 @@ var webpackConf = {
                   loader: 'babel-loader',
                   options: {
                     presets: ['es2015-without-strict'],
+                      plugins: ['babel-plugin-transform-async-to-generator',
+                          'babel-plugin-transform-es2015-template-literals',
+                      ],
                     cacheDirectory: true
                   }
                 }

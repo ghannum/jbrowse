@@ -53,6 +53,7 @@
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
     "babel-loader": "^7.1.4",
+    "babel-plugin-transform-es2015-template-literals": "^6.22.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-es2015-without-strict": "^0.0.4",
     "buffer-crc32": "^0.2.13",
