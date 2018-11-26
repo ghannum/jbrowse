@@ -8,3 +8,9 @@
     Header onsuccess set Access-Control-Allow-Origin *
     Header onsuccess set Access-Control-Allow-Headers X-Requested-With
 </IfModule>
+
+# Don't store png files
+<filesMatch ".(png)$">
+    Header set Cache-Control "no-store"
+</filesMatch>
+
