@@ -7,10 +7,15 @@
 <IfModule mod_headers.c>
     Header onsuccess set Access-Control-Allow-Origin *
     Header onsuccess set Access-Control-Allow-Headers X-Requested-With
+    # Don't store png files
+    <filesMatch ".(png)$">
+	Header set Cache-Control "no-store"
+    </filesMatch>
 </IfModule>
 
-# Don't store png files
-<filesMatch ".(png)$">
-    Header set Cache-Control "no-store"
-</filesMatch>
-
+AuthType Basic
+AuthName "Restricted Access"
+# (Following line optional)
+AuthBasicProvider file
+AuthUserFile "/etc/apache2/passwords"
+Require valid-user
